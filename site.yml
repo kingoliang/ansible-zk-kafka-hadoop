@@ -1,0 +1,11 @@
+- hosts: all
+  roles:
+    - { role: java }
+
+- hosts: zk
+  roles:
+    - zookeeper
+
+- hosts: kafka
+  roles:
+    - kafka
