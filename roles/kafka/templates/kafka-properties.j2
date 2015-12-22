@@ -17,7 +17,12 @@
 ############################# Server Basics #############################
 
 # The id of the broker. This must be set to a unique integer for each broker.
-broker.id={{ brokerid }}
+broker.id=
+{%- for name in groups["kafka"] -%}
+  {%- if name == ansible_fqdn or name in ansible_all_ipv4_addresses -%}
+{{ loop.index0 }}
+  {%- endif -%}
+{%- endfor %}
 
 ############################# Socket Server Settings #############################
 
