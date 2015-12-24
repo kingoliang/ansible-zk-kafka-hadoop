@@ -63,7 +63,7 @@
   notify: restart zookeeper
   tags: zookeeper
 
-- name: Ensures data dir {{ zk.data_dir }} exists
+- name: Ensures data dir `"{{ zk.data_dir }}"` exists
   file:
     path: "{{ zk.data_dir }}"
     state: directory
@@ -71,7 +71,7 @@
     group: zookeeper
   tags: zookeeper
 
-- name: Ensure myid is set to {{ cluster_node_seq }} in {{ zk.data_dir }}/myid
+- name: Ensure myid is set to `"{{ cluster_node_seq }}"` in `"{{ zk.data_dir }}"`/myid
   template:
     src: myid
     dest: "{{ zk.data_dir }}/myid"

@@ -3,9 +3,9 @@
 #   tags: hadoop
 
 - name: Stop DFS To Remove datanode data
-  command:  stop-dfs.sh
+  command:  su - {{ hadoop_user }} /bin/bash -c "stop-dfs.sh"
   tags: hadoop
 
 - name: Start DFS Again
-  command: start-dfs.sh
+  command: su - {{ hadoop_user }} /bin/bash -c "start-dfs.sh"
   tags: hadoop

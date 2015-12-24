@@ -3,7 +3,7 @@
 {%- else -%}
   {%- for name in groups["zk"] -%}
     {%- if name == ansible_fqdn or name in ansible_all_ipv4_addresses -%}
-{{ loop.index0 }}
+{{ loop.index }}
     {%- endif -%}
   {%- endfor -%}
 {%- endif -%}

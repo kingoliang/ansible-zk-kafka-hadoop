@@ -36,7 +36,7 @@
     - hadoop-second-namenode
 
 - hosts: hadoop-datanodes
-  remote_user: hadoop
+  remote_user: root
   tasks:
     - name: Remove Datanode data
       file: path={{ item }}  state=absent
@@ -45,6 +45,6 @@
       tags: hadoop
 
 - hosts: hadoop-namenode
-  remote_user: hadoop
+  remote_user: root
   roles: 
     - hadoop-restart
