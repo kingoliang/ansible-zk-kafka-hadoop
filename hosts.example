@@ -11,3 +11,21 @@
 10.5.6.33
 10.5.6.34
 10.5.6.35
+
+[hadoop:children]
+hadoop-master
+hadoop-namenode
+hadoop-secondarynamenode
+hadoop-datanodes
+
+[hadoop-master]
+10.5.6.31
+[hadoop-namenode]
+10.5.6.31
+[hadoop-secondarynamenode]
+10.5.6.32
+[hadoop-datanodes]
+10.5.6.32 hostname="slave1.vfhdfs.com"
+10.5.6.33 hostname="slave2.vfhdfs.com"
+10.5.6.34 hostname="slave3.vfhdfs.com"
+10.5.6.35 hostname="slave4.vfhdfs.com"

@@ -1,11 +1,50 @@
 - hosts: all
+  remote_user: root
   roles:
     - { role: java }
 
 - hosts: zk
+  remote_user: root
   roles:
     - zookeeper
 
 - hosts: kafka
+  remote_user: root
   roles:
     - kafka
+
+- hosts: hadoop
+  remote_user: root
+  roles:
+    - hadoop-common
+    - ssh_known_hosts
+
+- hosts: hadoop
+  remote_user: root
+  roles:
+    - ssh_password_less
+    - hadoop-init
+
+- hosts: hadoop-namenode
+  remote_user: root
+  roles:
+    - hadoop-first-namenode
+
+- hosts: hadoop-secondarynamenode
+  remote_user: root
+  roles:
+    - hadoop-second-namenode
+
+- hosts: hadoop-datanodes
+  remote_user: hadoop
+  tasks:
+    - name: Remove Datanode data
+      file: path={{ item }}  state=absent
+      with_items:
+        - "{{ hadoop_hdfs.dfs_dir_datanode }}"
+      tags: hadoop
+
+- hosts: hadoop-namenode
+  remote_user: hadoop
+  roles: 
+    - hadoop-restart
