@@ -1,0 +1,85 @@
+#
+#  90-nproc.conf parameters.
+#
+nproc_conf:
+  all_user_soft_limit: 10240
+  all_user_hard_limit: 10240
+  root_user_soft_limit: unlimited
+
+  # hdadmin nproc parameters.
+  hdadmin_soft_nofile: 32768
+  hdadmin_soft_nproc: 65536
+  hdadmin_hard_nofile: 1048576
+  hdadmin_hard_nproc: unlimited
+  hdadmin_hard_memlock: unlimited
+
+#
+# limits.conf variables
+#
+limits_conf:
+  all_user_soft_limit: 1000001
+  all_user_hard_limit: 1000001
+
+
+#
+# sysctl.conf variables
+#
+sysctl_conf:
+
+  # vm setting
+  vm_swappiness: 10
+  vm_dirty_ratio: 10
+  vm_min_free_kbytes: 65536
+  vm_max_map_count: 262144
+
+  # kernel parameter
+  kernel_msgmnb: 100000
+  kernel_msgmax: 100000
+
+  # filesystem
+  fs_file-max: 2097152
+
+  # net core parameters
+  net_core_rmem_default: 1048576
+  net_core_rmem_max: 16777216
+  net_core_wmem_default: 1048576
+  net_core_wmem_max: 16777216
+  net_core_optmem_max: 25165824
+  net_core_somaxconn: 65536
+  net_core_netdev_max_backlog: 65536
+
+  # ipv4 Setting
+  net_ipv4_tcp_moderate_rcvbuf: 0
+  net_ipv4_conf_all_rp_filter: 1
+  net_ipv4_tcp_slow_start_after_idle: 0
+  net_ipv4_tcp_fin_timeout: 10
+  net_ipv4_tcp_ecn: 0
+  net_ipv4_tcp_max_syn_backlog: 100000
+  net_ipv4_tcp_max_orphans: 262144
+  net_ipv4_tcp_max_tw_buckets: 2000000
+  net_ipv4_tcp_sack: 1
+  net_ipv4_tcp_timestamps: 1
+  net_ipv4_tcp_fin_timeout: 10
+  net_ipv4_tcp_slow_start_after_idle: 0
+
+  # Congestion Algo to use.
+  net_ipv4_tcp_congestion_control: cubic
+
+  # tcp memory
+  net_ipv4_tcp_mem_min: 30000000
+  net_ipv4_tcp_mem_default: 30000000
+  net_ipv4_tcp_mem_max: 30000000
+  net_ipv4_tcp_rmem_min: 30000000
+  net_ipv4_tcp_rmem_default: 30000000
+  net_ipv4_tcp_rmem_max: 30000000
+  net_ipv4_tcp_wmem_min: 30000000
+  net_ipv4_tcp_wmem_default: 30000000
+  net_ipv4_tcp_wmem_max: 30000000
+
+  #
+  net_ipv4_tcp_tw_reuse: 1
+  net_ipv4_tcp_tw_recycle: 1
+  net_unix_max_dgram_qlen: 100
+  net_ipv4_ip_nonlocal_bind: 1
+  net_ipv4_tcp_synack_retries: 2
+  net_ipv4_tcp_syn_retries: 2

@@ -1,0 +1,42 @@
+
+
+- name: Create a User `"{{ hadoop_user }}"` for all our Hadoop Modules.
+  user: name="{{ hadoop_user }}" password={{ hadoop_password }}
+  tags: hadoop
+
+- name: Copy and UnArchive the Package in Destination Server.
+  unarchive: creates={{ common['install_base_path'] }}/{{ hadoop_version }} src=file_archives/{{ hadoop_version }}.tar.gz dest={{ common['install_base_path'] }} owner={{ hadoop_user }} group={{ hadoop_group }}
+  tags: hadoop
+
+- name: Change Directory Permissions.
+  file: path={{ common['install_base_path'] }}/{{ hadoop_version }} owner={{ hadoop_user }} group={{ hadoop_group }} recurse=yes
+  tags: hadoop
+
+- name: Creating a Symbolic Link in {{ common['install_base_path'] }}/hadoop.
+  file: src={{ common['install_base_path'] }}/{{ hadoop_version }} path={{ common['soft_link_base_path'] }}/hadoop state=link owner={{ hadoop_user }} group={{ hadoop_group }}    
+  tags: hadoop
+
+- name: Updating Configuration File in Zookeeper.
+  template: src={{ item }} dest={{ common['soft_link_base_path'] }}/hadoop/etc/hadoop/  owner={{ hadoop_user }} group={{ hadoop_group }}
+  with_items:
+    - core-site.xml
+    - hdfs-site.xml
+    - slaves
+  tags: hadoop
+
+- name: Updating Configuration /etc/profile.d/javahadoop.sh .
+  template: src={{ item }} dest=/etc/profile.d/  owner={{ hadoop_user }} group={{ hadoop_group }}
+  with_items:
+    - javahadoop.sh
+  tags: hadoop
+
+- name: Create `namenode` data directory
+  file: path={{ item }}{{ hadoop_hdfs.dfs_dir_namenode }} owner={{ hadoop_user }} group={{ hadoop_group }} state=directory
+  with_items: hadoop_hdfs.dfs_dir_parent
+  tags: hadoop
+
+- name: Create `secondary namenode` data directory
+  file: path={{ item }}{{ hadoop_hdfs.dfs_dir_sec_namenode }} owner={{ hadoop_user }} group={{ hadoop_group }} state=directory
+  with_items: hadoop_hdfs.dfs_dir_parent
+  tags: hadoop
+

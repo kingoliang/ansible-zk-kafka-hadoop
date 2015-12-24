@@ -1,0 +1,40 @@
+- name : modify /etc/hosts
+  lineinfile :
+    dest=/etc/hosts
+    line="{{ hostvars[item]['inventory_hostname'] }}  {{ hostvars[item].hostname }}"
+  with_items: "{{ groups['hadoop'] }}"
+  tags: hadoop
+
+- name: Update sysctl.conf on the server.
+  template: src=sysctl.conf dest=/etc/sysctl.conf owner=root group=root backup=yes mode=0600
+  tags: hadoop
+
+- name: Update limits.conf on the server.
+  template: src=limits.conf dest=/etc/security/limits.conf backup=yes mode=0644
+  tags: hadoop
+
+- name: Update `90-nproc.conf` on the server.
+  template: src="90-nproc.conf" dest=/etc/security/limits.d/20-nproc.conf owner=root group=root backup=yes mode=0644
+  when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"
+  tags: hadoop
+
+- name: Update `90-nproc.conf` on the server.
+  template: src="90-nproc.conf" dest=/etc/security/limits.d/ owner=root group=root backup=yes mode=0644
+  when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"
+  tags: hadoop
+
+- name: Update `{{ hadoop_user }}.conf` on the server.
+  template: src=hdadmin.conf dest=/etc/security/limits.d/{{ hadoop_user }}.conf owner=root group=root backup=yes mode=0644
+  tags: hadoop
+
+- name: Setting `sysctl.conf` configuration.
+  command: sysctl -p
+  tags: hadoop
+
+- name: Update Hostname (/etc/sysconfig/network)
+  lineinfile: dest=/etc/sysconfig/network regexp='^HOSTNAME' line="HOSTNAME={{ hostname }}" state=present
+  tags: hadoop
+
+- name: Setting the Hostname Without a restart.
+  command: hostname {{ hostname }}
+  tags: hadoop

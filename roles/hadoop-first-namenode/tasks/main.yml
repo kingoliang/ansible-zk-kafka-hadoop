@@ -1,0 +1,36 @@
+- name: Stop DFS First
+  command: su - {{ hadoop_user }} /bin/bash -c "stop-dfs.sh"
+  tags: hadoop
+
+- name: Start zkfs
+  command: su - {{ hadoop_user }} /bin/bash -c "hdfs  zkfc -formatZK -nonInteractive -force"
+  tags: hadoop
+
+- name: Start DFS
+  command: su - {{ hadoop_user }} /bin/bash -c  "start-dfs.sh"
+  tags: hadoop
+
+- name: Format the namenode
+  command: su - {{ hadoop_user }} /bin/bash -c  "hdfs namenode -format -nonInteractive -force"
+  tags: hadoop
+
+- name: Stop the namenode
+  command: su - {{ hadoop_user }} /bin/bash -c  "hadoop-daemon.sh stop namenode"
+  tags: hadoop
+
+- name: Start the namenode
+  command: su - {{ hadoop_user }} /bin/bash -c  "hadoop-daemon.sh start namenode"
+  tags: hadoop
+
+
+# - name: Format the namenode - [[ WILL NOT FORMAT IF current/VERSION]].
+#   command: creates={{ hadoop_hdfs.dfs_dir_parent[0]  }}{{ hadoop_hdfs.dfs_dir_namenode }}/current/VERSION sh {{ common['soft_link_base_path'] }}/hadoop/bin/hadoop namenode -format
+#   sudo: yes
+#   sudo_user: "{{ hadoop_user }}"
+#   tags: hadoop
+
+# - name: Starting Namenode.
+#   command: sh {{ common['soft_link_base_path'] }}/hadoop/sbin/hadoop-daemon.sh start namenode
+#   sudo: yes
+#   sudo_user: "{{ hadoop_user }}"
+#   tags: hadoop

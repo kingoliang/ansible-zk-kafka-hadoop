@@ -1,0 +1,93 @@
+## Global Variables.
+
+#
+# TODO :
+#       We need to move these variables in the roles which they belong.
+#       For now in Global for easy access.
+#
+
+# --------------------------------------
+# COMMON FOR INSTALL PATH
+# --------------------------------------
+
+# Common Location information.
+common:
+  install_base_path: /usr/local
+  remote_dest_base: /root/ansible
+  soft_link_base_path: /opt
+
+
+# --------------------------------------
+# SSH KNOWN
+# --------------------------------------
+#
+# This is used in ssh_known_hosts
+# Helps us Add host in ssh_known_hosts.
+# Nice Article here - More Information in Link :
+#       https://juriansluiman.nl/article/151/managing-ssh-known-hosts-with-ansible
+#
+ssh_known_hosts_command: "ssh-keyscan -H -T 10"
+ssh_known_hosts_file: "/etc/ssh/ssh_known_hosts"
+
+
+
+
+
+# --------------------------------------
+# USERs
+# --------------------------------------
+
+hadoop_user: hadoop
+hadoop_group: hadoop
+hadoop_password: $6$rounds=656000$mPYBl3SWvi9WMo/w$9YTrGTi.uc/6O1eBseriebVTD8y0Zbl3u8nkYJl4RvQ9QDGz7L0QH0otgF2jVVJoTGTWi5lexUF75fe33ZfzI.
+
+#明文密码 hadoop123!@#
+#生成方法
+# pip install passlib
+# python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt(getpass.getpass())"
+
+#ZooKeeper Variables
+
+zk_client_port: 2181
+
+# --------------------------------------
+# HADOOP VARIABLES
+# --------------------------------------
+
+hadoop_version: hadoop-2.6.0
+
+#
+# HDFS variables.
+#
+hadoop_hdfs:
+  dfs_replication: 3
+  dfs_datanode_max_xcievers: 4096
+  dfs_dir_namenode: /namenode_meta_store
+  dfs_dir_sec_namenode: /sec_namenode_meta_store
+  dfs_dir_journal_node: /journal_node
+  dfs_dir_datanode: [ /data/hadoop/datanode ]
+  dfs_dir_parent: [ /data/hadoop ] 
+
+
+hadoop_yarn: 
+  yarn_scheduler_min_alloc_mb: 1024
+  yarn_scheduler_max_alloc_mb: 40960
+  #yarn_scheduler_max_alloc_mb: 16384
+  yarn_nodemgr_resource_mem_mb: 40960
+  #yarn_nodemgr_resource_mem_mb: 16384
+  yarn_log_aggr_enable: true
+  yarn_nodemgr_local_dir: [ /data/yarn/local ]
+  yarn_nodemgr_log_dir: [ /data/yarn/logs ]
+
+hadoop_map_reduce:
+  mr_map_mem_mb: 2048
+  mr_tt_map_task_max: 40
+  mr_tt_reduce_task_max: 20
+  mr_reduce_mem_mb: 3072
+  mr_map_java_opts: -Xmx1024m
+  mr_reduce_java_opts: -Xmx2048m
+ 
+# --------------------------------------
+# JAVA Variables.
+# --------------------------------------
+java_home: /usr/local/java8
