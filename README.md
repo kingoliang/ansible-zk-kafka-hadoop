@@ -1,4 +1,4 @@
-# ansible-kafka
+# ansible JDK8 Zookeeper Kafka Hadoop(HDFS)
 
 ## 用途
 在CentOS上安装zookeeper、kafka和Hadoop(HDFS)。
@@ -12,16 +12,27 @@
   2、修改/etc/ansible/hosts文件。格式见上面的说明。
   
   3、只安装JDK8
+
     - ansible-playbook site.yml --tags java8
+  
     只安装zookeeper
+  
     - ansible-playbook site.yml --tags zk    
+  
     只安装kafka
+  
     - ansible-playbook site.yml --tags kafka
+  
     只安装hadoop
+  
     - ansible-playbook site.yml --tags hadoop
+  
     组合安装：
+  
     - ansible-playbook site.yml --tags java8,zk,kafka,hadoop
+  
     全部安装：
+  
     - ansible-playbook site.yml 
     
 
