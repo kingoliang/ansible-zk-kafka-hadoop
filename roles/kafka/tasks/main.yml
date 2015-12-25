@@ -1,11 +1,18 @@
 - name: disable firewalld
   service: name=firewalld state=stopped enabled=no
   ignore_errors: True  #when firewalld is stopped
+  when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"  
   tags: kafka
 
-- name: install tools
-  yum: name="@Development tools" state=present
+- name: disable iptables
+  service: name=iptables state=stopped enabled=no
+  ignore_errors: True  #when firewalld is stopped
+  when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"  
   tags: kafka
+
+# - name: install tools
+#   yum: name="@Development tools" state=present
+#   tags: kafka
 
 - name: create group
   group:
@@ -26,26 +33,24 @@
 
 - name: Setting internal variable
   set_fact:
-    kafka_dir: "{{ kafka.install_dir }}/{{ kafka_name }}"
+    kafka_dir: "{{ common['install_base_path'] }}/{{ kafka_name }}"
   tags: kafka
 
-- name: check if tar has been downloaded
-  command: test -f /tmp/{{ kafka_name }}.tgz
-  register: kafka_tar_downloaded
-  failed_when: kafka_tar_downloaded.rc not in [0, 1]
-  changed_when: False
+- name: Copy and UnArchive the Package in Destination Server.
+  unarchive: creates={{ kafka_dir }} src=file_archives/kafka_{{ kafka.scala_version }}-{{ kafka.version }}.tgz dest={{ common['install_base_path'] }} owner=kafka group=kafka
   tags: kafka
 
-- name: Ensure Kafka tar is downloaded
-  get_url:
-    url: "{{ kafka.mirror }}/kafka/{{ kafka.version }}/{{ kafka_name }}.tgz"
-    dest: /tmp
+- name: Change Directory Permissions.
+  file: path={{ kafka_dir }} owner=kafka group=kafka recurse=yes
   tags: kafka
-  when: kafka_tar_downloaded.rc == 1
 
-- name: Ensure tar is extracted
-  command: tar xzf /tmp/{{ kafka_name }}.tgz chdir="{{ kafka.install_dir }}"
+- name: Creating a Symbolic Link in {{ common['install_base_path'] }}/kafka.
+  file: src={{ kafka_dir }} path={{ common['soft_link_base_path'] }}/kafka state=link owner=kafka group=kafka
   tags: kafka
+
+# - name: Ensure tar is extracted
+#   command: tar xzf /tmp/{{ kafka_name }}.tgz chdir="{{ common['install_base_path' }}"
+#   tags: kafka
 
 # Config and start Kafka
 - name: Ensures data dir {{ kafka.data_dir }} exists
@@ -60,15 +65,28 @@
   template:
     src: kafka-properties.j2
     dest: "{{ kafka_dir }}/config/real-server.properties"
-  notify: restart kafka
+  # notify: 
+  #   - stop kafka
+  #   - start kafka
   tags: kafka
 
-- name: systemd start script
-  template:
-    src: kafka-systemd.j2
-    dest: /etc/systemd/system/kafka.service
-    owner: root
-    group: root
-    mode: 644
-  notify: start kafka
+- name: stop kafka
+  command: su - kafka /bin/bash -c "{{ kafka_dir }}/bin/kafka-server-stop.sh"
+  ignore_errors: True
   tags: kafka
+
+- name: start kafka
+  command: su - kafka /bin/bash -c "{{ kafka_dir }}/bin/kafka-server-start.sh -daemon {{ kafka_dir }}/config/real-server.properties"
+  tags: kafka
+
+
+
+# - name: systemd start script
+#   template:
+#     src: kafka-systemd.j2
+#     dest: /etc/systemd/system/kafka.service
+#     owner: root
+#     group: root
+#     mode: 644
+#   notify: start kafka
+#   tags: kafka

@@ -2,7 +2,7 @@
 #   file: path="{{ hadoop_hdfs.dfs_dir_datanode }}"  state=absent
 #   tags: hadoop
 
-- name: Stop DFS To Remove datanode data
+- name: Stop DFS 
   command:  su - {{ hadoop_user }} /bin/bash -c "stop-dfs.sh"
   tags: hadoop
 

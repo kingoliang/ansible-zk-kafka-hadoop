@@ -1,0 +1,28 @@
+- name: Find Java Process Count
+  command: /bin/bash -c "ps -ef | grep java | grep -v grep | wc -l "
+  register: processcount
+  ignore_errors: True
+  tags: clean
+
+- name: Kill Java Process(Attention:All Java Process Will be Killed)
+  command: /bin/bash -c "ps -ef | grep java | grep -v grep | awk '{print $2 }' | xargs kill -9"
+  ignore_errors: True
+  when: processcount.stdout | int > 0
+  tags: clean
+
+- name: Remove  Java 8,ZooKeeper , Kafka , Hadoop Program and Data Dir
+  file: path={{ item }}  state=absent
+  with_items:
+    - "/usr/java/jdk{{ jdk8_version }}"
+    - "/usr/local/java{{ jdk8_pkg_version }}"
+    - "{{ common['install_base_path'] }}/zookeeper-{{ zk.version }}"
+    - "{{ zk.data_dir }}"
+    - "{{ common['install_base_path'] }}/kafka_{{ kafka.scala_version }}-{{ kafka.version }}"
+    - "{{ kafka.data_dir }}"
+    - "{{ common['install_base_path'] }}/{{ hadoop_version }}"
+    - "{{ hadoop_hdfs.dfs_dir_parent }}"
+    - "{{ common['soft_link_base_path'] }}/zookeeper"
+    - "{{ common['soft_link_base_path'] }}/kafka"
+    - "{{ common['soft_link_base_path'] }}/hadoop"
+  tags: clean
+

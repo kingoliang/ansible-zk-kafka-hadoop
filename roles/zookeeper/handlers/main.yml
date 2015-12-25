@@ -1,5 +1,11 @@
+# - name: start zookeeper
+#   service: name=zookeeper state=started enabled=yes
+
+# - name: restart zookeeper
+#   service: name=zookeeper state=restarted enabled=yes
+
 - name: start zookeeper
-  service: name=zookeeper state=started enabled=yes
+  command: su - zookeeper /bin/bash -c  "{{ zk_dir }}/bin/zkServer.sh start"
 
 - name: restart zookeeper
-  service: name=zookeeper state=restarted enabled=yes
+  command: su - zookeeper /bin/bash -c  "{{ zk_dir }}/bin/zkServer.sh restart"

@@ -13,15 +13,12 @@
 10.5.6.35
 
 [hadoop:children]
-hadoop-master
 hadoop-namenode
 hadoop-secondarynamenode
 hadoop-datanodes
 
-[hadoop-master]
-10.5.6.31
 [hadoop-namenode]
-10.5.6.31
+10.5.6.31 hostname="master.vfhdfs.com"
 [hadoop-secondarynamenode]
 10.5.6.32
 [hadoop-datanodes]

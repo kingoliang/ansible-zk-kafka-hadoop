@@ -1,6 +1,0 @@
-zk:
-  version: 3.4.7
-  mirror: http://mirrors.ibiblio.org/apache/
-  data_dir: /var/lib/zookeeper
-  install_dir: "/etc"
-  tick_time: 2000

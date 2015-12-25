@@ -1,6 +1,13 @@
 - name: disable firewalld
   service: name=firewalld state=stopped enabled=no
   ignore_errors: True  #when firewalld is stopped
+  when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"
+  tags: zookeeper
+
+- name: disable firewalld
+  service: name=iptables state=stopped enabled=no
+  ignore_errors: True  #when firewalld is stopped
+  when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"
   tags: zookeeper
 
 # Otherwise, Zookeeper ends up not working when using ailases
@@ -34,26 +41,24 @@
 
 - name: Zookeeper | Setting internal variable
   set_fact:
-    zk_dir: "{{ zk.install_dir }}/{{ zk_name }}"
+    zk_dir: "{{ common['install_base_path'] }}/{{ zk_name }}"
   tags: zookeeper
 
-- name: check if tar has been downloaded
-  command: test -f /tmp/{{ zk_name }}.tar.gz
-  register: zookeeper_tar_downloaded
-  failed_when: zookeeper_tar_downloaded.rc not in [0, 1]
-  changed_when: False
+- name: Copy and UnArchive the Package in Destination Server.
+  unarchive: creates={{ zk_dir }} src=file_archives/{{ zk_name }}.tar.gz dest={{ common['install_base_path'] }} owner=zookeeper group=zookeeper
   tags: zookeeper
 
-- name: Ensure Zookeeper tar is downloaded
-  get_url:
-    url: "{{ zk.mirror }}/zookeeper/{{ zk_name }}/{{ zk_name }}.tar.gz"
-    dest: /tmp
+- name: Change Directory Permissions.
+  file: path={{ zk_dir }} owner=zookeeper group=zookeeper recurse=yes
   tags: zookeeper
-  when: zookeeper_tar_downloaded.rc == 1
 
-- name: Ensure tar is extracted
-  command: tar xzf /tmp/{{ zk_name }}.tar.gz chdir="{{ zk.install_dir }}"
+- name: Creating a Symbolic Link in {{ common['install_base_path'] }}/zookeeper.
+  file: src={{ zk_dir }} path={{ common['soft_link_base_path'] }}/zookeeper state=link owner=zookeeper group=zookeeper
   tags: zookeeper
+
+# - name: Ensure tar is extracted
+#   command: tar xzf file_archives/{{ zk_name }}.tar.gz chdir="{{ common['install_base_path' }}"
+#   tags: zookeeper
 
 # Config and start Zookeeper
 - name: Ensure zoo.conf is present
@@ -78,12 +83,24 @@
   notify: restart zookeeper
   tags: zookeeper
 
-- name: systemd start script
-  template:
-    src: zookeeper-systemd.j2
-    dest: /etc/systemd/system/zookeeper.service
-    owner: root
-    group: root
-    mode: 644
-  notify: start zookeeper
-  tags: zookeeper
+# - name: systemd start script
+#   template:
+#     src: zookeeper-systemd.j2
+#     dest: /etc/systemd/system/zookeeper.service
+#     owner: root
+#     group: root
+#     mode: 644
+#   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"
+#   notify: start zookeeper
+#   tags: zookeeper
+
+# - name: systemd start script
+#   template:
+#     src: zookeeper-initd.j2
+#     dest: /etc/rc.d/init.d/zookeeper
+#     owner: root
+#     group: root
+#     mode: 644
+#   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"
+#   notify: start zookeeper
+#   tags: zookeeper

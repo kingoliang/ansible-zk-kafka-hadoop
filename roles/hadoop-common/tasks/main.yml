@@ -13,12 +13,12 @@
   template: src=limits.conf dest=/etc/security/limits.conf backup=yes mode=0644
   tags: hadoop
 
-- name: Update `90-nproc.conf` on the server.
+- name: Update `90-nproc.conf` on the server[CentOS 6].
   template: src="90-nproc.conf" dest=/etc/security/limits.d/20-nproc.conf owner=root group=root backup=yes mode=0644
   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"
   tags: hadoop
 
-- name: Update `90-nproc.conf` on the server.
+- name: Update `90-nproc.conf` on the server[CentOS 7].
   template: src="90-nproc.conf" dest=/etc/security/limits.d/ owner=root group=root backup=yes mode=0644
   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"
   tags: hadoop

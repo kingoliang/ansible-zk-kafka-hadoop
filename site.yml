@@ -1,3 +1,8 @@
+- hosts: localhost
+  remote_user: root
+  roles:
+    - prepare-files
+
 - hosts: all
   remote_user: root
   roles:

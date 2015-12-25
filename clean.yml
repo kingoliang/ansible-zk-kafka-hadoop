@@ -1,0 +1,14 @@
+- hosts: hadoop
+  remote_user: root
+  roles:
+    - cleaner
+
+- hosts: zk
+  remote_user: root
+  roles:
+    - cleaner
+
+- hosts: kafka
+  remote_user: root
+  roles:
+    - cleaner

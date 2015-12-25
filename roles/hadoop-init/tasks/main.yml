@@ -16,6 +16,10 @@
   file: src={{ common['install_base_path'] }}/{{ hadoop_version }} path={{ common['soft_link_base_path'] }}/hadoop state=link owner={{ hadoop_user }} group={{ hadoop_group }}    
   tags: hadoop
 
+- name: Install fuse
+  yum: name="psmisc" state=present
+  tags: hadoop
+
 - name: Updating Configuration File in Zookeeper.
   template: src={{ item }} dest={{ common['soft_link_base_path'] }}/hadoop/etc/hadoop/  owner={{ hadoop_user }} group={{ hadoop_group }}
   with_items:

@@ -1,0 +1,55 @@
+- name: check jdk8 package downloaded
+  command: test -f file_archives/jdk-{{ jdk8_pkg_version }}-linux-x64.tar.gz
+  register: jdk8_downloaded
+  failed_when: jdk8_downloaded.rc not in [0, 1]
+  changed_when: False
+  tags: java8
+
+- name: download jdk8 package
+  command: >
+    wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u40-b26/jdk-8u40-linux-x64.tar.gz" -O file_archives/jdk-{{ jdk8_pkg_version }}-linux-x64.tar.gz
+  tags: java8
+  when: jdk8_downloaded.rc == 1
+
+- name: check if ZooKeeper tar has been downloaded
+  command: test -f file_archives/zookeeper-{{ zk.version }}.tar.gz
+  register: zookeeper_tar_downloaded
+  failed_when: zookeeper_tar_downloaded.rc not in [0, 1]
+  changed_when: False
+  tags: zookeeper
+
+- name: Ensure Zookeeper tar is downloaded
+  get_url:
+    url: "{{ zk.mirror }}/zookeeper/zookeeper-{{ zk.version }}/zookeeper-{{ zk.version }}.tar.gz"
+    dest: file_archives
+  tags: zookeeper
+  when: zookeeper_tar_downloaded.rc == 1
+
+- name: check if Kafka tar has been downloaded
+  command: test -f file_archives/kafka_{{ kafka.scala_version }}-{{ kafka.version }}.tgz
+  register: kafka_tar_downloaded
+  failed_when: kafka_tar_downloaded.rc not in [0, 1]
+  changed_when: False
+  tags: kafka
+
+- name: Ensure Kafka tar is downloaded
+  get_url:
+    url: "{{ kafka.mirror }}/kafka/{{ kafka.version }}/kafka_{{ kafka.scala_version }}-{{ kafka.version }}.tgz"
+    dest: file_archives
+  tags: kafka
+  when: kafka_tar_downloaded.rc == 1
+
+
+- name: check if hadoop tar has been downloaded
+  command: test -f file_archives/{{ hadoop_version }}.tar.gz
+  register: hadoop_tar_downloaded
+  failed_when: hadoop_tar_downloaded.rc not in [0, 1]
+  changed_when: False
+  tags: hadoop
+
+- name: Ensure Hadoop tar is downloaded
+  get_url:
+    url: "{{ hadoop_mirror }}/hadoop/common/{{ hadoop_version }}/{{ hadoop_version }}.tar.gz"
+    dest: file_archives
+  tags: hadoop
+  when: hadoop_tar_downloaded.rc == 1
