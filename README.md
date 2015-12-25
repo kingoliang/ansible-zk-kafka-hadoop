@@ -34,5 +34,9 @@
     全部安装：
   
     - ansible-playbook site.yml 
+
+    清空所有安装的软件和数据：
+
+    - ansible-playbook clean.yml
     
 
