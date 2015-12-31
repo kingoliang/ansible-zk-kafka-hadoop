@@ -1,6 +1,6 @@
-- name: install wget
-  yum: name=wget state=present
-  tags: java8
+# - name: install wget
+#   yum: name=wget,libselinux-python state=present
+#   tags: java8
 
 - name: create /usr/java directory
   file: path=/usr/java state=directory owner=root group=root mode=0755

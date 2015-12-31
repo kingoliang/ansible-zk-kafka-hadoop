@@ -1,3 +1,11 @@
+- name: install openssh-clients
+  yum: name=wget,libselinux-python,openssh-clients state=present
+  tags: 
+    - hadoop
+    - java8
+    - zk
+    - kafka
+
 - name: check jdk8 package downloaded
   command: test -f file_archives/jdk-{{ jdk8_pkg_version }}-linux-x64.tar.gz
   register: jdk8_downloaded
@@ -16,13 +24,13 @@
   register: zookeeper_tar_downloaded
   failed_when: zookeeper_tar_downloaded.rc not in [0, 1]
   changed_when: False
-  tags: zookeeper
+  tags: zk
 
 - name: Ensure Zookeeper tar is downloaded
   get_url:
     url: "{{ zk.mirror }}/zookeeper/zookeeper-{{ zk.version }}/zookeeper-{{ zk.version }}.tar.gz"
     dest: file_archives
-  tags: zookeeper
+  tags: zk
   when: zookeeper_tar_downloaded.rc == 1
 
 - name: check if Kafka tar has been downloaded
