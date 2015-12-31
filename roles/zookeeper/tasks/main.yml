@@ -2,13 +2,13 @@
   service: name=firewalld state=stopped enabled=no
   ignore_errors: True  #when firewalld is stopped
   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"
-  tags: zookeeper
+  tags: zk
 
 - name: disable firewalld
   service: name=iptables state=stopped enabled=no
   ignore_errors: True  #when firewalld is stopped
   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"
-  tags: zookeeper
+  tags: zk
 
 # Otherwise, Zookeeper ends up not working when using ailases
 - name: remove own host from 127.0.0.1 aliases
@@ -19,46 +19,46 @@
     line='\1\2'
     backup=yes
     backrefs=yes
-  tags: zookeeper
+  tags: zk
   notify: restart zookeeper
 
 - name: create group
   group:
     name: zookeeper
     state: present
-  tags: zookeeper
+  tags: zk
 
 - name: create user
   user:
     name: zookeeper
     group: zookeeper
-  tags: zookeeper
+  tags: zk
 
 - name: Setting internal variable
   set_fact:
     zk_name: zookeeper-{{ zk.version }}
-  tags: zookeeper
+  tags: zk
 
 - name: Zookeeper | Setting internal variable
   set_fact:
     zk_dir: "{{ common['install_base_path'] }}/{{ zk_name }}"
-  tags: zookeeper
+  tags: zk
 
 - name: Copy and UnArchive the Package in Destination Server.
   unarchive: creates={{ zk_dir }} src=file_archives/{{ zk_name }}.tar.gz dest={{ common['install_base_path'] }} owner=zookeeper group=zookeeper
-  tags: zookeeper
+  tags: zk
 
 - name: Change Directory Permissions.
   file: path={{ zk_dir }} owner=zookeeper group=zookeeper recurse=yes
-  tags: zookeeper
+  tags: zk
 
 - name: Creating a Symbolic Link in {{ common['install_base_path'] }}/zookeeper.
   file: src={{ zk_dir }} path={{ common['soft_link_base_path'] }}/zookeeper state=link owner=zookeeper group=zookeeper
-  tags: zookeeper
+  tags: zk
 
 # - name: Ensure tar is extracted
 #   command: tar xzf file_archives/{{ zk_name }}.tar.gz chdir="{{ common['install_base_path' }}"
-#   tags: zookeeper
+#   tags: zk
 
 # Config and start Zookeeper
 - name: Ensure zoo.conf is present
@@ -66,7 +66,7 @@
     src: zoo.cfg
     dest: "{{ zk_dir }}/conf/zoo.cfg"
   notify: restart zookeeper
-  tags: zookeeper
+  tags: zk
 
 - name: Ensures data dir `"{{ zk.data_dir }}"` exists
   file:
@@ -74,14 +74,14 @@
     state: directory
     owner: zookeeper
     group: zookeeper
-  tags: zookeeper
+  tags: zk
 
 - name: Ensure myid is set to `"{{ cluster_node_seq }}"` in `"{{ zk.data_dir }}"`/myid
   template:
     src: myid
     dest: "{{ zk.data_dir }}/myid"
   notify: restart zookeeper
-  tags: zookeeper
+  tags: zk
 
 # - name: systemd start script
 #   template:
@@ -92,7 +92,7 @@
 #     mode: 644
 #   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"
 #   notify: start zookeeper
-#   tags: zookeeper
+#   tags: zk
 
 # - name: systemd start script
 #   template:
@@ -103,4 +103,4 @@
 #     mode: 644
 #   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"
 #   notify: start zookeeper
-#   tags: zookeeper
+#   tags: zk
