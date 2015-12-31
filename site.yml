@@ -6,7 +6,7 @@
 - hosts: all
   remote_user: root
   tasks:
-    - name: install openssh-clients
+    - name: install wget,libselinux-python,openssh-clients
       yum: name=wget,libselinux-python,openssh-clients state=present
       tags: 
         - hadoop
