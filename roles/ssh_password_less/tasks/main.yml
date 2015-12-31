@@ -14,6 +14,12 @@
   sudo_user: "{{ hadoop_user }}"
   tags: hadoop
 
+- name: Lets copy config to location .ssh.
+  template: src=config dest=~/.ssh/config mode=600
+  sudo: yes
+  sudo_user: "{{ hadoop_user }}"
+  tags: hadoop
+
 - name: Lets copy id_rsa to location .ssh.
   template: src=id_rsa dest=~/.ssh/id_rsa.v mode=600
   sudo: yes
