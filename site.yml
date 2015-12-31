@@ -5,6 +5,17 @@
 
 - hosts: all
   remote_user: root
+  tasks:
+    - name: install openssh-clients
+      yum: name=wget,libselinux-python,openssh-clients state=present
+      tags: 
+        - hadoop
+        - java8
+        - zk
+        - kafka
+
+- hosts: all
+  remote_user: root
   roles:
     - { role: java }
 
