@@ -78,7 +78,7 @@
   <value>{% for data_dir_parent in hadoop_hdfs['dfs_dir_parent'] %}{% if not loop.first and flag == 1 %},{% else %}{% set flag=1 %}{% endif %}{{ data_dir_parent }}{{ hadoop_hdfs['dfs_dir_namenode'] }}{% endfor %}/journal</value>
 </property>
 <property>
-  <name>dfs.client.failover.proxy.provider.myhadoop</name>
+  <name>dfs.client.failover.proxy.provider.vfintrahdfs</name>
   <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
 </property>
 <property>
