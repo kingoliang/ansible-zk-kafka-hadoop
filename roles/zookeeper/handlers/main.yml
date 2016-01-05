@@ -6,6 +6,8 @@
 
 - name: start zookeeper
   command: su - zookeeper /bin/bash -c  "{{ zk_dir }}/bin/zkServer.sh start"
+  tags: zk
 
 - name: restart zookeeper
   command: su - zookeeper /bin/bash -c  "{{ zk_dir }}/bin/zkServer.sh restart"
+  tags: zk

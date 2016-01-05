@@ -4,7 +4,7 @@
   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "7"
   tags: zk
 
-- name: disable firewalld
+- name: disable iptables
   service: name=iptables state=stopped enabled=no
   ignore_errors: True  #when firewalld is stopped
   when: ansible_distribution =="CentOS" and ansible_distribution_major_version == "6"
@@ -83,6 +83,8 @@
   notify: restart zookeeper
   tags: zk
 
+- name: restart zookeeper
+  command: su - zookeeper /bin/bash -c  "{{ zk_dir }}/bin/zkServer.sh restart"
 # - name: systemd start script
 #   template:
 #     src: zookeeper-systemd.j2

@@ -64,3 +64,13 @@
   remote_user: root
   roles: 
     - hadoop-restart
+
+- hosts: hadoop-rm1
+  remote_user: root
+  roles:
+    - hadoop-rm1
+
+- hosts: hadoop-rm2
+  remote_user: root
+  roles:
+    - hadoop-rm2
