@@ -83,7 +83,8 @@
 </property>
 <property>
   <name>dfs.ha.fencing.methods</name>
-  <value>sshfence</value>
+  <value>sshfence
+    shell(/bin/true)</value>
   <description>how to communicate in the switch process</description>
 </property>
 <property>
@@ -94,9 +95,5 @@
 <property>
   <name>dfs.ha.fencing.ssh.connect-timeout</name>
   <value>5000</value>
-</property>
-<property>
-  <name>dfs.ha.fencing.methods</name>
-  <value>shell(/bin/true)</value>
 </property>
 </configuration>
