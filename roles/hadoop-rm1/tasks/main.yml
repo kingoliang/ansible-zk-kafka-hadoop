@@ -7,11 +7,11 @@
   tags: hadoop
 
 - name: Create /var/log/hadoop-yarn dir on hdfs
-  command: su - {{ hadoop_user }} /bin/bash -c  "hadoop fs -mkdir-p /var/log/hadoop-yarn"
+  command: su - {{ hadoop_user }} /bin/bash -c  "hadoop fs -mkdir -p /var/log/hadoop-yarn"
   tags: hadoop
 
 - name: chown /var/log/hadoop-yarn dir to hadoop
-  command: su - {{ hadoop_user }} /bin/bash -c  "hadoop fs -chown hadoop:hadoop/var/log/hadoop-yarn"
+  command: su - {{ hadoop_user }} /bin/bash -c  "hadoop fs -chown hadoop:hadoop /var/log/hadoop-yarn"
   tags: hadoop
 
 
