@@ -16,6 +16,8 @@
 hadoop-namenode
 hadoop-secondarynamenode
 hadoop-datanodes
+hadoop-rm1
+hadoop-rm2
 
 [hadoop-namenode]
 10.5.6.31 hostname="master.vfhdfs.com"
@@ -26,3 +28,8 @@ hadoop-datanodes
 10.5.6.33 hostname="slave2.vfhdfs.com"
 10.5.6.34 hostname="slave3.vfhdfs.com"
 10.5.6.35 hostname="slave4.vfhdfs.com"
+
+[hadoop-rm1]
+10.5.6.31
+[hadoop-rm2]
+10.5.6.32

@@ -25,6 +25,8 @@
   with_items:
     - core-site.xml
     - hdfs-site.xml
+    - yarn-site.xml
+    - mapred-site.xml
     - slaves
   tags: hadoop
 
