@@ -20,7 +20,6 @@
     backup=yes
     backrefs=yes
   tags: zk
-  notify: restart zookeeper
 
 - name: create group
   group:
@@ -65,7 +64,6 @@
   template:
     src: zoo.cfg
     dest: "{{ zk_dir }}/conf/zoo.cfg"
-  notify: restart zookeeper
   tags: zk
 
 - name: Ensures data dir `"{{ zk.data_dir }}"` exists
@@ -80,11 +78,12 @@
   template:
     src: myid
     dest: "{{ zk.data_dir }}/myid"
-  notify: restart zookeeper
   tags: zk
 
 - name: restart zookeeper
   command: su - zookeeper /bin/bash -c  "{{ zk_dir }}/bin/zkServer.sh restart"
+  tags: zk
+
 # - name: systemd start script
 #   template:
 #     src: zookeeper-systemd.j2
