@@ -1,17 +1,25 @@
 - name: start yarn on resource manager 1
   command: su - {{ hadoop_user }} /bin/bash -c  "start-yarn.sh"
-  tags: hadoop
+  tags: 
+    - hadoop
+    - yarn
 
 - name: Start the historyserver on resource manager 1
   command: su - {{ hadoop_user }} /bin/bash -c  "mr-jobhistory-daemon.sh start historyserver"
-  tags: hadoop
+  tags: 
+    - hadoop
+    - yarn
 
 - name: Create /var/log/hadoop-yarn dir on hdfs
   command: su - {{ hadoop_user }} /bin/bash -c  "hadoop fs -mkdir -p /var/log/hadoop-yarn"
-  tags: hadoop
+  tags: 
+    - hadoop
+    - yarn
 
 - name: chown /var/log/hadoop-yarn dir to hadoop
   command: su - {{ hadoop_user }} /bin/bash -c  "hadoop fs -chown hadoop:hadoop /var/log/hadoop-yarn"
-  tags: hadoop
+  tags: 
+    - hadoop
+    - yarn
 
 

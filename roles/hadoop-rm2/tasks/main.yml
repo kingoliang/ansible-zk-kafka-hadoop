@@ -1,7 +1,11 @@
 - name: start resourcemanager on resource manager 2
   command: su - {{ hadoop_user }} /bin/bash -c  "yarn-daemon.sh start resourcemanager"
-  tags: hadoop
+  tags: 
+    - hadoop
+    - yarn
 
 - name: Start the historyserver on resource manager 1
   command: su - {{ hadoop_user }} /bin/bash -c  "mr-jobhistory-daemon.sh start historyserver"
-  tags: hadoop
+  tags: 
+    - hadoop
+    - yarn
