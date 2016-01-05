@@ -26,12 +26,12 @@
 <!-- configure historyserver -->
   <property>
     <name>mapreduce.jobhistory.address</name>
-    <value>{% for server in groups['hadoop-rm1'] %}{% if not loop.first and flag == 1 %},{% else %}{% set flag=1 %}{% endif %}{{ hostvars[server].hostname }}{% endfor %}:10020</value>
+    <value>0.0.0.0:10020</value>
   </property>
 
 <property>
     <name>mapreduce.jobhistory.webapp.address</name>
-    <value>{% for server in groups['hadoop-rm1'] %}{% if not loop.first and flag == 1 %},{% else %}{% set flag=1 %}{% endif %}{{ hostvars[server].hostname }}{% endfor %}:19888</value>
+    <value>0.0.0.0:19888</value>
 </property>
 
 <!-- configure staging directory -->

@@ -78,7 +78,7 @@
 
   <property>
     <name>yarn.resourcemanager.ha.id</name>
-    <value>{% for server in groups['hadoop-rm1'] %}{% if server == ansible_fqdn or server in ansible_all_ipv4_addresses %}rm1{% endif %} {% endfor %}{% for server in groups['hadoop-rm2'] %}{% if server == ansible_fqdn or server in ansible_all_ipv4_addresses %}rm2{% endif %} {% endfor %}</value>
+    <value>{%- for server in groups['hadoop-rm1'] -%}{%- if server == ansible_fqdn or server in ansible_all_ipv4_addresses -%}rm1{%- endif -%}{%- endfor -%}{%- for server in groups['hadoop-rm2'] -%}{%- if server == ansible_fqdn or server in ansible_all_ipv4_addresses -%}rm2{%- endif -%}{%- endfor -%}</value>
   </property>
 
   <property>
