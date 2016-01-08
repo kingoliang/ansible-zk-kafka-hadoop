@@ -44,7 +44,7 @@
 
   <property>
     <name>mapred.child.java.opts</name>
-    <value>-Xmx2g</value>
+    <value>-Xmx1g</value>
   </property>
 
   <property>
@@ -65,6 +65,23 @@
   <property>
     <name>mapreduce.reduce.shuffle.parallelcopies</name>
     <value>20</value>
+  </property>
+
+  <property>
+　　<name>mapreduce.map.memory.mb</name>
+　　<value>1536</value>
+  </property>
+  <property>
+　　<name>mapreduce.map.java.opts</name>
+　　<value>-Xmx1024M</value>
+  </property>
+  <property>
+　　<name>mapreduce.reduce.memory.mb</name>
+　　<value>3072</value>
+  </property>
+  <property>
+　　<name>mapreduce.reduce.java.opts</name>
+　　<value>-Xmx2560M</value>
   </property>
 
 </configuration>
