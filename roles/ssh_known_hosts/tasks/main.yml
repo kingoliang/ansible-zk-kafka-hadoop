@@ -2,26 +2,10 @@
   file: "path={{ ssh_known_hosts_file }} state=touch"
   tags: hadoop
 
-- name: Check host name availability
-  shell: "ssh-keygen -f {{ ssh_known_hosts_file }} -F {{ item }}"
-  with_items: groups['hadoop']
-  register: ssh_known_host_results
-  tags: hadoop
-
-- name: Scan the public key
-  shell: "{{ ssh_known_hosts_command}} {{ item.item }} >> {{ ssh_known_hosts_file }}"
-  with_items: ssh_known_host_results.results
-  when: item.stdout == ""
-  tags: hadoop
-
-- name: Check host name availability
-  shell: "ssh-keygen -f {{ ssh_known_hosts_file }} -F {{ hostvars[item].hostname  }}"
-  with_items: groups['hadoop']
+- name: test hostvars
+  shell: "if ( ssh-keyscan {{ hostvars[item].hostname }}  | xargs  -i grep {} /etc/ssh/ssh_known_hosts); then   echo 0; else    ssh-keyscan {{ hostvars[item].hostname }} >> {{ ssh_known_hosts_file }}; fi "
+  with_items: "{{ groups['hadoop'] }}"
   register: ssh_known_host_results_hostname
   tags: hadoop
 
-- name: Scan the public key [hostname]
-  shell: "{{ ssh_known_hosts_command}} {{ item.item }} >> {{ ssh_known_hosts_file }}"
-  with_items: ssh_known_host_results_hostname.results
-  when: item.stdout == ""
-  tags: hadoop
+

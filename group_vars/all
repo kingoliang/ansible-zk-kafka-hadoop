@@ -55,7 +55,7 @@ kafka:
 # ZooKeeper
 # --------------------------------------
 zk:
-  version: 3.4.7
+  version: 3.4.9
   mirror: http://mirrors.ibiblio.org/apache/
   data_dir: /var/lib/zookeeper
   tick_time: 2000
@@ -94,6 +94,6 @@ hadoop_hdfs:
   dfs_dir_namenode: /namenode_meta_store
   dfs_dir_sec_namenode: /sec_namenode_meta_store
   dfs_dir_journal_node: /journal_node
-  dfs_dir_datanode: [ /data/hadoop/datanode ]
-  dfs_dir_parent: [ /data/hadoop ] 
+  dfs_dir_datanode: [ /opt/hadoop/data/datanode ]
+  dfs_dir_parent: [ /opt/hadoop/data/ ] 
  
